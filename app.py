@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 
 from flask import Flask, jsonify
 from flask_smorest import Api
@@ -20,6 +21,7 @@ db_path = os.path.join(base_dir, "data.db")
 def create_app(db_url=None):
 
     app = Flask(__name__)
+    load_dotenv()
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Stores REST API"
@@ -33,6 +35,7 @@ def create_app(db_url=None):
     app.config["JWT_SECRET_KEY"] = "287472411784016187712619667881859434204"
 
     db.init_app(app=app)
+
     migrate = Migrate(app, db)
     api = Api(app)
     
@@ -96,5 +99,4 @@ def create_app(db_url=None):
     api.register_blueprint(StoreBlueprint)
     api.register_blueprint(TagBlueprint)
     api.register_blueprint(UserBlueprint)
-
     return app
